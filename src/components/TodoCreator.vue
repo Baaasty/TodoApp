@@ -1,5 +1,5 @@
 <script setup>
-import { defineEmits, reactive } from "vue";
+import { reactive } from "vue";
 
 const emit = defineEmits(["create-todo"]);
 
