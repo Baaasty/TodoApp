@@ -1,7 +1,8 @@
 <script setup>
-import { ref, watch, computed } from "vue";
+import { ref, watch, computed, guardReactiveProps } from "vue";
 import { uid } from "uid";
 import { Icon } from "@iconify/vue";
+import Draggable from "vuedraggable"
 
 import TodoCreator from "../components/TodoCreator.vue";
 import TodoItem from "../components/TodoItem.vue";
@@ -56,16 +57,37 @@ const updateTodo = (todo, index) => {
 const deleteTodo = (id) => {
   todoList.value = todoList.value.filter(todo => todo.id !== id);
 }
+
+const drag = ref(false);
+
+const setDragCursor = (value) => {
+  const html = document.getElementsByTagName('html').item(0);
+  html.classList.toggle('grabbing', value);
+
+  drag.value = value;
+}
 </script>
 
 <template>
   <main>
     <h1>Create Todo</h1>
     <TodoCreator @create-todo="createTodo" />
-    <ul class="todo-list" v-if="todoList.length > 0">
-      <TodoItem v-for="(todo, index) in todoList" :todo="todo" :index="index" @toggle-complete="toggleTodoComplete"
-        @edit-todo="toggleEditTodo" @update-todo="updateTodo" @delete-todo="deleteTodo" />
-    </ul>
+    <Draggable 
+      class="todo-list"
+      v-model="todoList"
+      tag="ul"
+      :animation="150"
+      :forceFallback="true"
+      :ghostClass="'ghost'"
+      @start="setDragCursor(true)"
+      @end="setDragCursor(false)"
+      v-if="todoList.length > 0"
+    >
+      <template #item="{ element: todo, index }">
+        <TodoItem :class="{ 'todo-item': drag }" :todo="todo" :index="index" @toggle-complete="toggleTodoComplete"
+          @edit-todo="toggleEditTodo" @update-todo="updateTodo" @delete-todo="deleteTodo" />
+      </template>
+    </Draggable>
     <p class="todos-msg" v-else>
       <Icon icon="noto-v1:sad-but-relieved-face" width="22" />
       <span>You have no todo's to complete! Add one!</span>
@@ -77,7 +99,25 @@ const deleteTodo = (id) => {
   </main>
 </template>
 
+<style lang="scss">
+#app .todo-list .todo-item input[type="checkbox"] {
+  cursor: grabbing;
+}
+
+#app .todo-list .todo-item .todo-actions * {
+  cursor: grabbing;
+}
+
+.grabbing * {
+    cursor: grabbing !important;
+}
+</style>
+
 <style scoped lang="scss">
+.ghost {
+  opacity: 0;
+}
+
 main {
   display: flex;
   flex-direction: column;

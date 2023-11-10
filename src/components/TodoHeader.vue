@@ -25,6 +25,8 @@ header {
     display: flex;
     align-items: center;
     padding: 25px 16px;
+    max-width: 1100px;
+    margin: 0 auto;
 
     .branding {
       display: flex;

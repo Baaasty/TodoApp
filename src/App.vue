@@ -18,8 +18,9 @@ import TodoHeader from "./components/TodoHeader.vue";
   box-sizing: border-box;
 }
 
-.container {
-  max-width: 1100px;
-  margin: 0 auto;
+#app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 </style>

@@ -20,7 +20,7 @@ defineEmits(["toggle-complete", "edit-todo", "update-todo", "delete-todo"]);
     <input type="checkbox" :checked="todo.isCompleted" @input="$emit('toggle-complete', index)">
     <div class="todo">
       <input v-if="todo.isEditing" type="text" :value="todo.todo"
-        @input="$emit('update-todo', $event.target.value, index)">
+        @input="$emit('update-todo', $event.target.value, index)" @keypress.enter="$emit('edit-todo', index)">
       <span v-else :class="{ 'completed-todo': todo.isCompleted }">
         {{ todo.todo }}
       </span>
@@ -37,11 +37,12 @@ defineEmits(["toggle-complete", "edit-todo", "update-todo", "delete-todo"]);
 li {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 10px;
   padding: 16px 10px;
   background-color: #f1f1f1;
-  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1),
-    0 8px 10px -6px rgb(0 0 0 / 0.1);
+  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  cursor: grab;
 
   &:hover {
     .todo-actions {
@@ -56,10 +57,21 @@ li {
     background-color: #fff;
     border-radius: 50%;
     box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    cursor: pointer;
 
     &:checked {
       background-color: #ff8080;
     }
+  }
+
+  .custom-button::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    bottom: -5px;
+    left: -5px;
+    background-color: transparent;
   }
 
   .todo {
@@ -82,7 +94,7 @@ li {
     opacity: 0;
     transition: 150ms ease-in-out;
 
-    .icon {
+    * {
       cursor: pointer;
     }
   }
