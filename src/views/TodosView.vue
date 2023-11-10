@@ -113,7 +113,6 @@ const setDragCursor = (value) => {
 </style>
 
 <style scoped lang="scss">
-
 main {
   display: flex;
   flex-direction: column;
