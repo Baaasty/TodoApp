@@ -79,8 +79,8 @@ const setDragCursor = (value) => {
       :animation="150"
       :forceFallback="true"
       :ghostClass="'ghost'"
-      @start="setDragCursor(true)"
-      @end="setDragCursor(false)"
+      @choose="setDragCursor(true)"
+      @unchoose="setDragCursor(false)"
       v-if="todoList.length > 0"
     >
       <template #item="{ element: todo, index }">
