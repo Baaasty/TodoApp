@@ -1,4 +1,4 @@
-# Todo App
+# Todo App (Vue.js)
 
 This is a simple Todo App built with Vue.js. It allows you to add, edit, and delete tasks.
 
